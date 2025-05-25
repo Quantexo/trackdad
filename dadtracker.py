@@ -42,9 +42,15 @@ def calculate_portfolio(holdings, transactions):
             symbol = row['Symbol']
             qty = row['Quantity']
             price = row['Price']
-            avg_buy = buy_data[buy_data['Symbol'] == symbol]['Price'].mean()
-            if not pd.isna(avg_buy):
-                realised_pnl += (price - avg_buy) * qty
+            
+            symbol_buys = buy_data[buy_data['Symbol'] == symbol]
+            if not symbol_buys.empty:
+                total_buy_amount = (symbol_buys['Price'] * symbol_buys['Quantity']).sum()
+                total_buy_qty = symbol_buys['Quantity'].sum()
+                if total_buy_qty > 0:
+                    avg_buy = total_buy_amount / total_buy_qty
+                    realised_pnl += (price - avg_buy) * qty
+
     except Exception as e:
         st.warning(f"Couldn't calculate realized P&L: {str(e)}")
     
@@ -57,6 +63,7 @@ def style_dataframe(df):
             lambda x: 'color: green' if x > 0 else 'color: red',
             subset=['Unrealised P&L', 'Daily P&L', 'P&L %']
         ).format({
+            'Quantity': '{:,.0f}',
             'Current Value': 'Rs {:,.2f}',
             'Invested Amount': 'Rs {:,.2f}',
             'Unrealised P&L': 'Rs {:,.2f}',
