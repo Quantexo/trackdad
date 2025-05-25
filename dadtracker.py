@@ -9,11 +9,21 @@ st.set_page_config("NEPSE Portfolio Tracker", layout="wide")
 SHEET_ID = "1wS0n3SaoUsoWkp654IRh5hUT4QXKsdkC8uamOYBDIB0"
 HOLDINGS_GID = "0"
 TRANSACTIONS_GID = "1347762871"
+LAST_UPDATED_GID = "1293420892"
+
 
 # --- Helper to build CSV URL ---
 @st.cache_data(ttl=3600)
 def get_csv_url(sheet_id, sheet_gid):
     return f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={sheet_gid}"
+
+def get_last_updated(sheet_id, gid):
+    url = get_csv_url(sheet_id, gid)
+    try:
+        df = pd.read_csv(url, header=None)
+        return df.iloc[0, 0] if not df.empty else "N/A"
+    except Exception as e:
+        return f"Error fetching update time: {str(e)}"
 
 # --- Portfolio Calculation ---
 def calculate_portfolio(holdings, transactions):
@@ -42,15 +52,9 @@ def calculate_portfolio(holdings, transactions):
             symbol = row['Symbol']
             qty = row['Quantity']
             price = row['Price']
-            
-            symbol_buys = buy_data[buy_data['Symbol'] == symbol]
-            if not symbol_buys.empty:
-                total_buy_amount = (symbol_buys['Price'] * symbol_buys['Quantity']).sum()
-                total_buy_qty = symbol_buys['Quantity'].sum()
-                if total_buy_qty > 0:
-                    avg_buy = total_buy_amount / total_buy_qty
-                    realised_pnl += (price - avg_buy) * qty
-
+            avg_buy = buy_data[buy_data['Symbol'] == symbol]['Price'].mean()
+            if not pd.isna(avg_buy):
+                realised_pnl += (price - avg_buy) * qty
     except Exception as e:
         st.warning(f"Couldn't calculate realized P&L: {str(e)}")
     
@@ -78,6 +82,12 @@ def style_dataframe(df):
 # --- Main App ---
 def main():
     st.title("📈 NEPSE Portfolio Tracker")
+
+    st.markdown("### 📘 Prem Prakash Shrestha Portfolio (Since 2016-09-08)")
+
+    last_updated = get_last_updated(SHEET_ID, LAST_UPDATED_GID)
+    st.markdown(f"##### 🕒 Last Updated: `{last_updated}`")
+
     
     with st.expander("ℹ️ About this app"):
         st.markdown("""
