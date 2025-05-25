@@ -93,10 +93,24 @@ def main():
         st.markdown("""
         This app automatically tracks your NEPSE portfolio using data from a public Google Sheet.
         
-        **Features:**
-        - Real-time portfolio valuation
-        - Unrealized and realized P&L tracking
-        - Daily performance monitoring
+        ### 🚀 Key Features
+        - 📊 **Portfolio Valuation** is powered by live market data that auto-refreshes via Google Sheets.  
+        ✅ After the market closes, Google Sheets imports the final **close prices**, enabling **accurate calculation of your portfolio**.  
+        🔔 For reference, you can also visit [NEPSE Today’s Price](https://nepalstock.com.np/today-price) after **3:25 P.M.** to view official closing prices.
+
+        - 💹 **Unrealized and Realized Profit & Loss** calculations
+        - 📅 **Daily P&L Tracking** to monitor short-term gains/losses
+        - 🔄 **Auto-refresh support** with one-click cache clearing
+        - 📈 **Dynamic and color-coded performance visualization**
+        - 🕵️‍♂️ **Transaction history** with buy/sell breakdown
+
+        ### 📌 How It Works
+        - Data is fetched from your linked Google Sheet
+        - Automatically calculates key performance metrics
+        - Presents a clean and interactive dashboard using Streamlit
+
+        ---  
+        Developed with ❤️
         """)
 
     try:
