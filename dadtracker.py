@@ -81,6 +81,9 @@ def style_dataframe(df):
 
 # --- Main App ---
 def main():
+    
+    lang = st.selectbox("🌐 Select Language / भाषा छान्नुहोस्", ["English", "नेपाली"])
+
     st.title("📈 NEPSE Portfolio Tracker")
 
     st.markdown("### 📘 Prem Prakash Shrestha Portfolio (Since 2016-09-08)")
@@ -90,28 +93,51 @@ def main():
 
     
     with st.expander("ℹ️ About this app"):
-        st.markdown("""
-        This app automatically tracks your NEPSE portfolio using data from a public Google Sheet.
-        
-        ### 🚀 Key Features
-        - 📊 **Portfolio Valuation** is powered by live market data that auto-refreshes via Google Sheets.  
-        ✅ After the market closes, Google Sheets imports the final **close prices**, enabling **accurate calculation of your portfolio**.  
-        🔔 For reference, you can also visit [NEPSE Today’s Price](https://nepalstock.com.np/today-price) after **3:25 P.M.** to view official closing prices.
+        if lang == "English":
+            st.markdown("""
+            This app automatically tracks your NEPSE portfolio using data from a public Google Sheet.
 
-        - 💹 **Unrealized and Realized Profit & Loss** calculations
-        - 📅 **Daily P&L Tracking** to monitor short-term gains/losses
-        - 🔄 **Auto-refresh support** with one-click cache clearing
-        - 📈 **Dynamic and color-coded performance visualization**
-        - 🕵️‍♂️ **Transaction history** with buy/sell breakdown
+            ### 🚀 Key Features
+            - 📊 **Portfolio Valuation** is powered by live market data that auto-refreshes via Google Sheets.  
+            ✅ After the market closes, Google Sheets imports the final **close prices**, enabling **accurate calculation of your portfolio**.  
+            🔔 For reference, you can also visit [NEPSE Today’s Price](https://nepalstock.com.np/today-price) after **3:25 P.M.** to view official closing prices.
 
-        ### 📌 How It Works
-        - Data is fetched from your linked Google Sheet
-        - Automatically calculates key performance metrics
-        - Presents a clean and interactive dashboard using Streamlit
+            - 💹 **Unrealized and Realized Profit & Loss** calculations
+            - 📅 **Daily P&L Tracking** to monitor short-term gains/losses
+            - 🔄 **Auto-refresh support** with one-click cache clearing
+            - 📈 **Dynamic and color-coded performance visualization**
+            - 🕵️‍♂️ **Transaction history** with buy/sell breakdown
 
-        ---  
-        Developed with ❤️
-        """)
+            ### 📌 How It Works
+            - Data is fetched from your linked Google Sheet
+            - Automatically calculates key performance metrics
+            - Presents a clean and interactive dashboard using Streamlit
+
+            ---  
+            Developed with ❤️
+            """)
+        else:
+            st.markdown("""
+            यो एपले तपाईको NEPSE पोर्टफोलियोलाई सार्वजनिक Google Sheet बाट स्वतः ट्र्याक गर्छ।
+
+            ### 🚀 प्रमुख विशेषताहरू
+            - 📊 **पोर्टफोलियो मूल्याङ्कन** लाई Google Sheets को माध्यमबाट आउने प्रत्यक्ष बजार मूल्यले शक्ति दिन्छ।  
+            ✅ बजार बन्द भएपछि Google Sheets मा अन्तिम **closing price** ल्याइन्छ जसले गर्दा तपाईको पोर्टफोलियोको **सटीक गणना** सम्भव हुन्छ।  
+            🔔 अधिक जानकारीको लागि [NEPSE Today’s Price](https://nepalstock.com.np/today-price) मा **३:२५ बजे पछि** हेर्न सक्नुहुन्छ।
+
+            - 💹 **Unrealized र Realized नाफा/नोक्सानी** को गणना
+            - 📅 **दैनिक P&L ट्र्याकिङ** — छोटो अवधिको नाफा/नोक्सानी हेर्न
+            - 📈 **रंग अनुसार प्रदर्शन देखाउने तालिका**
+            - 🕵️‍♂️ **Buy/Sell लेनदेन हिसाब गर्ने लेनदेन इतिहास**
+
+            ### 📌 यो कसरी काम गर्छ?
+            - तपाईको Google Sheet बाट डेटा लिइन्छ
+            - मुख्य वित्तीय गणनाहरू स्वचालित रूपमा गरिन्छ
+            - Streamlit प्रयोग गरेर सफा र अन्तरक्रियात्मक ड्यासबोर्ड देखाइन्छ
+
+            ---  
+            ❤️ बाट निर्माण गरिएको
+            """)
 
     try:
         with st.spinner("Loading data from Google Sheets..."):
